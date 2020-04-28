@@ -7,6 +7,7 @@ import com.dishanm.ignite.menu_api.repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
@@ -14,6 +15,15 @@ public class ItemService {
 
     @Autowired
     private ItemRepository itemRepository;
+
+    @Autowired
+    private IgniteService igniteService;
+
+    @PostConstruct
+    private void initialize() {
+        List<Item> items = itemRepository.findAll();
+        igniteService.addItemList(items);
+    }
 
     public List<Item> getAllItems() {
         return itemRepository.findAll();
@@ -30,7 +40,9 @@ public class ItemService {
     }
 
     public Item addItem(Item item) {
-        return itemRepository.save(item);
+        Item createdItem = itemRepository.save(item);
+        igniteService.addOrUpdateItemCache(createdItem);
+        return createdItem;
     }
 
     public void deleteItem(long id) {
