@@ -1,4 +1,4 @@
-package com.dishanm.ignite.menu_api.Exceptions;
+package com.dishanm.ignite.order_api.Exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
